@@ -2,16 +2,23 @@ package org.example;
 
 public class Calc {
     public static int run(String exp) {
+        boolean needToMulti = exp.contains("*");
+        boolean needToSum = !exp.contains("*");
         exp = exp.replaceAll("\\- ", "\\+ \\-");
-
-        String[] bits = exp.trim().split(" \\+ ");
-
-        int sum = 0;
-
-        for(int i = 0; i < bits.length; i++) {
-            sum += Integer.parseInt(bits[i]);
+        int answer = 0;
+        if(needToSum) {
+            String[] bits = exp.trim().split(" \\+ ");
+            for (int i = 0; i < bits.length; i++) {
+                answer += Integer.parseInt(bits[i]);
+            }
         }
-
-        return sum;
+        if(needToMulti) {
+            answer = 1;
+            String[] bits = exp.trim().split(" \\* ");
+            for(int i = 0; i < bits.length; i++){
+                answer *= Integer.parseInt(bits[i]);
+            }
+        }
+        return answer;
     }
 }
