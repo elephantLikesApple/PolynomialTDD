@@ -2,14 +2,18 @@ package org.example;
 
 public class Calc {
     public static int run(String exp) {
-        String[] bits = exp.trim().split(" ");
+        exp = exp.replaceAll("\\- ", "\\+ \\-");
+
+        String[] bits = exp.trim().split(" \\+ ");
+
         int a = Integer.parseInt(bits[0]);
-        String op = bits[1];
-        int b = Integer.parseInt(bits[2]);
-        return switch (op) {
-            case "+" -> a + b;
-            case "-" -> a - b;
-            default -> a;
-        };
+        int b = Integer.parseInt(bits[1]);
+        int c = 0;
+
+        if(bits.length>2) {
+            c = Integer.parseInt(bits[2]);
+        }
+
+        return a + b + c;
     }
 }
