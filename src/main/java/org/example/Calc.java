@@ -1,7 +1,12 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Calc {
     public static int run(String exp) {
+        if(!exp.contains((" "))) return Integer.parseInt(exp);
+
         exp = exp.replaceAll("\\- ", "\\+ \\-");
         boolean needToMulti = exp.contains("*");
         boolean needToSum = exp.contains("+");
@@ -10,7 +15,13 @@ public class Calc {
         int answer = 0;
         if(needToCompound) {
             String[] bits = exp.trim().split(" \\+ ");
-            return Integer.parseInt(bits[0]) + run(bits[1]);
+
+            String newExp = Arrays.stream(bits)
+                    .mapToInt(Calc::run)
+                    .mapToObj( e -> e+"")
+                    .collect(Collectors.joining(" + "));
+
+            return run(newExp);
         }
         if(needToSum) {
             String[] bits = exp.trim().split(" \\+ ");
