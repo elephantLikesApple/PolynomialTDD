@@ -12,11 +12,31 @@ public class Calc {
         exp = exp.replaceAll("\\- ", "\\+ \\-");
         boolean needToMulti = exp.contains("*");
         boolean needToSum = exp.contains("+");
-        boolean needTobracket = exp.contains("(");
+        boolean needTobracket = exp.contains("(") || exp.contains(")");
         boolean needToCompound = needToMulti && needToSum;
 
 
         int answer = 0;
+
+        if(needTobracket) {
+            int braketsCount = 0;
+            int splitPoint = -1;
+            for(int i = 0; i < exp.length(); i++) {
+                if(exp.charAt(i) == '(') {
+                    braketsCount++;
+                }
+                else if( exp.charAt(i) == ')') {
+                    splitPoint = i;
+                    braketsCount--;
+                }
+                if(braketsCount == 0) break;
+            }
+
+            String first = exp.substring(0, splitPoint+1);
+            String second = exp.substring(splitPoint+4);
+
+            return Calc.run(first) + Calc.run(second);
+        }
         if(needToCompound) {
             String[] bits = exp.trim().split(" \\+ ");
 
